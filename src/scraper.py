@@ -8,7 +8,7 @@ class GoldAppleScraper:
     def __init__(self, base_url):
         self.base_url = base_url
         self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
         self.parser = ProductParser()
 
@@ -21,15 +21,18 @@ class GoldAppleScraper:
             if not response:
                 break
             soup = BeautifulSoup(response.text, "lxml")
-            product_cards = soup.select("div.product-card")
+            # Обновлённый селектор (замените на актуальный класс)
+            product_cards = soup.select("div.catalog-product")
             if not product_cards:
+                print(f"Нет карточек товаров на странице {url}. Прерывание цикла.")  # Для отладки
                 break
             for card in product_cards:
                 product = self._parse_product_card(card)
                 if product:
                     products.append(product)
             page += 1
-            time.sleep(1)  # Avoid overwhelming the server
+            time.sleep(1)  # Избегайте перегрузки сервера
+        print(f"Найдено {len(product_cards)} карточек на странице {url}")
         return products
 
     def _fetch_page(self, url):
@@ -42,7 +45,7 @@ class GoldAppleScraper:
             return None
 
     def _parse_product_card(self, card):
-        product_url = card.select_one("a.product-card__link")["href"]
+        product_url = card.select_one("a.catalog-product__link")["href"]  # Обновите селектор
         if not product_url.startswith("http"):
             product_url = "https://goldapple.ru" + product_url
         response = self._fetch_page(product_url)

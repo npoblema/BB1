@@ -27,10 +27,10 @@ class TestGoldAppleScraper(unittest.TestCase):
     @patch("src.scraper.GoldAppleScraper._fetch_page")
     @patch("src.scraper.GoldAppleScraper._parse_product_card")
     def test_scrape_products(self, mock_parse_product_card, mock_fetch_page):
-        # Имитируем успешный запрос с пустым списком продуктов
+        # Имитируем успешный запрос с новым селектором
         mock_fetch_page.side_effect = [
-            Mock(text="<html><div class='product-card'></div></html>"),
-            None
+            Mock(text="<html><div class='catalog-product'></div></html>"),  # Обновлённый класс
+            None  # Симулируем конец страниц
         ]
         mock_parse_product_card.return_value = None  # Симулируем отсутствие данных о продукте
         products = self.scraper.scrape_products()
