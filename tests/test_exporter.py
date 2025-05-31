@@ -9,7 +9,7 @@ class TestCsvExporter(unittest.TestCase):
         self.exporter = CsvExporter("test_products.csv")
         self.products = [
             Product(
-                url="https://goldapple.ru/product",
+                url="https://goldapple.ru",
                 name="Perfume Name",
                 price="1500",
                 rating="4.5",
