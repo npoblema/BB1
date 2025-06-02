@@ -9,3 +9,4 @@ class Product:
     description: str
     usage: str
     country: str
+    brand: str = ""
